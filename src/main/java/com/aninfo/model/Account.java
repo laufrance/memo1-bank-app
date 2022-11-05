@@ -1,6 +1,7 @@
 package com.aninfo.model;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -11,11 +12,16 @@ public class Account {
 
     private Double balance;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cbu_account")
+    private List<Transaction> transactionList;
+
     public Account(){
     }
 
     public Account(Double balance) {
         this.balance = balance;
+        this.transactionList = new ArrayList<>();
     }
 
     public Long getCbu() {
@@ -34,4 +40,11 @@ public class Account {
         this.balance = balance;
     }
 
+    public List<Transaction> getTransactionList() {
+        return this.transactionList;
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactionList.add(transaction);
+    }
 }
