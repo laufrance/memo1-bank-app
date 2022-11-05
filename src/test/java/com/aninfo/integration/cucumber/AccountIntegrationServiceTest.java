@@ -26,4 +26,8 @@ public class AccountIntegrationServiceTest {
         return accountService.deposit(account.getCbu(), sum);
     }
 
+    Account promo_deposit(Account account, Double sum) {
+        return accountService.promo_deposit(account.getCbu(), sum);
+    }
+
 }

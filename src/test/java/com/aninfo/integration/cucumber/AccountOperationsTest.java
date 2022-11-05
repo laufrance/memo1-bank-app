@@ -50,14 +50,7 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
     @When("^Trying to promo deposit (.*)$")
     public void trying_to_promo_deposit(int sum) {
         try {
-            if(sum>2000){
-                if(sum*0.1 > 500) {
-                    sum += 500;
-                }
-            }else{
-                sum+= sum*0.1;
-            }
-            account = deposit(account, Double.valueOf(sum));
+            account = promo_deposit(account, Double.valueOf(sum));
         } catch (DepositNegativeSumException dnse) {
             this.dnse = dnse;
         }
