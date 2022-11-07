@@ -10,16 +10,29 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private TypeOfTransaction transactionType;
 
-    private Double sum;
+    public TransactionModels getTransactionType() {
+        return this.transactionType;
+    }
 
     public Transaction() {
     }
 
-    public Transaction(TypeOfTransaction transactionType, Double sum) {
+    public Transaction(TransactionModels transactionType, Double sum) {
         this.transactionType= transactionType;
         this.sum = sum;
     }
+
+    @Enumerated(EnumType.STRING)
+    private TransactionModels transactionType;
+
+    private Double sum;
+
+    public Double getSum() {
+        return this.sum;
+    }
+    public Long getId() {
+        return this.id;
+    }
+
 }

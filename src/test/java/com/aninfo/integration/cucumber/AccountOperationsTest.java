@@ -29,6 +29,7 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
         account = createAccount(Double.valueOf(balance));
     }
 
+
     @When("^Trying to withdraw (\\d+)$")
     public void trying_to_withdraw(int sum) {
         try {
@@ -42,15 +43,6 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
     public void trying_to_deposit(int sum) {
         try {
             account = deposit(account, Double.valueOf(sum));
-        } catch (DepositNegativeSumException dnse) {
-            this.dnse = dnse;
-        }
-    }
-
-    @When("^Trying to promo deposit (.*)$")
-    public void trying_to_promo_deposit(int sum) {
-        try {
-            account = promo_deposit(account, Double.valueOf(sum));
         } catch (DepositNegativeSumException dnse) {
             this.dnse = dnse;
         }
@@ -74,6 +66,15 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
     @And("^Account balance should remain (\\d+)$")
     public void account_balance_should_remain(int balance) {
         assertEquals(Double.valueOf(balance), account.getBalance());
+    }
+
+    @When("^Trying to promo deposit (.*)$")
+    public void trying_to_promo_deposit(int sum) {
+        try {
+            account = promo_deposit(account, Double.valueOf(sum));
+        } catch (DepositNegativeSumException dnse) {
+            this.dnse = dnse;
+        }
     }
 
     @After

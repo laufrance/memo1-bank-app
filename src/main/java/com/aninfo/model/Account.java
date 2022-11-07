@@ -12,6 +12,7 @@ public class Account {
     private Long cbu;
 
     private Double balance;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "cbu_account")
     private List<Transaction> transactionList;
@@ -22,7 +23,6 @@ public class Account {
     public Account(Double balance) {
         this.balance = balance;
         this.transactionList = new ArrayList<>();
-
     }
 
     public Long getCbu() {

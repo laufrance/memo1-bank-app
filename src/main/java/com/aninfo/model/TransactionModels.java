@@ -1,5 +1,5 @@
 package com.aninfo.model;
 
-public enum TypeOfTransaction {
+public enum TransactionModels {
     WITHDRAW, DEPOSIT
 }

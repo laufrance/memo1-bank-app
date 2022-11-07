@@ -20,8 +20,8 @@ public class Memo1BankApp {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.aninfo"))
-				.build();
+			.select()
+			.apis(RequestHandlerSelectors.basePackage("com.aninfo"))
+			.build();
 	}
 }
