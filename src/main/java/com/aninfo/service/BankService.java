@@ -4,9 +4,8 @@ import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
 import com.aninfo.model.Account;
 import com.aninfo.model.Transaction;
-import com.aninfo.model.TransactionType;
+import com.aninfo.model.TypeOfTransaction;
 import com.aninfo.repository.AccountRepository;
-//import com.aninfo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +17,13 @@ import java.util.Optional;
 @Service
 public class BankService {
 
+    private static final Double promoStartingCredit = 500d;
+
     @Autowired
     private AccountRepository accountRepository;
 
-    //@Autowired
-   // private TransactionRepository transactionRepository;
-
-    public Account createAccount(double balance) {
-        return accountRepository.save(new Account(balance));
+    public Account createAccount(Account request) {
+        return accountRepository.save(new Account(request.getBalance()));
     }
 
     public Collection<Account> getAccounts() {
@@ -52,7 +50,7 @@ public class BankService {
             throw new InsufficientFundsException("Insufficient funds");
         }
 
-        Transaction transaction = new Transaction(TransactionType.WITHDRAW, sum);
+        Transaction transaction = new Transaction(TypeOfTransaction.WITHDRAW, sum);
         account.setBalance(account.getBalance() - sum);
         account.addTransaction(transaction);
         accountRepository.save(account);
@@ -68,10 +66,7 @@ public class BankService {
         }
 
         Account account = accountRepository.findAccountByCbu(cbu);
-
-
-        Transaction transaction = new Transaction(TransactionType.DEPOSIT, sum);
-
+        Transaction transaction = new Transaction(TypeOfTransaction.DEPOSIT, sum);
         account.setBalance(account.getBalance() + sum);
         account.addTransaction(transaction);
         accountRepository.save(account);
@@ -83,12 +78,24 @@ public class BankService {
         return accountRepository.findAccountByCbu(cbu).getTransactionList();
     }
 
-    //public Transaction getTransaction(Long id) {
-    //    return transactionRepository.findAccountById(id);
-    //}
+    @Transactional
+    public Account promo_deposit(Long cbu, Double sum) {
 
-    //public void deleteTransaction(Long id) {
-    //  transactionRepository.deleteById(id);
-    //}
+        if (sum <= 0) {
+            throw new DepositNegativeSumException("Cannot deposit negative sums");
+        }
+        if (sum >= 2000) {
+            if (sum * 0.1 >= 500) {
+                sum += 500;
+            } else {
+                sum += sum * 0.1;
+            }
+        }
+        Account account = accountRepository.findAccountByCbu(cbu);
+        account.setBalance(account.getBalance() + sum);
+        accountRepository.save(account);
+
+        return account;
+    }
 
 }

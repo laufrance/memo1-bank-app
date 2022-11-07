@@ -1,4 +1,5 @@
 package com.aninfo.model;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +8,10 @@ import java.util.List;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cbu;
 
     private Double balance;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "cbu_account")
     private List<Transaction> transactionList;
@@ -22,6 +22,7 @@ public class Account {
     public Account(Double balance) {
         this.balance = balance;
         this.transactionList = new ArrayList<>();
+
     }
 
     public Long getCbu() {
@@ -47,4 +48,5 @@ public class Account {
     public void addTransaction(Transaction transaction) {
         this.transactionList.add(transaction);
     }
+
 }

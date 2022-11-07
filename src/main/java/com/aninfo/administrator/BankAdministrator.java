@@ -1,9 +1,10 @@
-package com.aninfo.controller;
+package com.aninfo.administrator;
 
+import com.aninfo.endpoint.AccountInteraction;
 import com.aninfo.model.Account;
-import com.aninfo.model.Transaction;
 import com.aninfo.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,27 +14,25 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "/api/v1")
-class BankController {
+public class BankAdministrator {
 
     @Autowired
     private BankService bankService;
 
-    //@GetMapping("/transactions/{id}")
-//    public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
-            //      Transaction transaction = bankService.getTransaction(id);
-    //   System.out.println(transaction.toString());
-    //   return ResponseEntity.of(Optional.of(transaction));
-    //}
+
+    @PostMapping("/accounts")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<AccountInteraction> createAccount(@RequestBody Account request) {
+        Account resp = bankService.createAccount(request);
+        return ResponseEntity.of(Optional.of(new AccountInteraction(resp)));
+    }
+
 
     @GetMapping("/accounts")
     public Collection<Account> getAccounts() {
         return bankService.getAccounts();
     }
 
-    @DeleteMapping("/transactions/{id}")
-    public void deleteTransaction(@PathVariable Long id) {
-        //    bankService.deleteTransaction(id);
-    }
 
     @GetMapping("/accounts/{cbu}")
     public ResponseEntity<Account> getAccount(@PathVariable Long cbu) {
